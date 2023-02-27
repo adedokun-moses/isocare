@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid ">
     <div class="row">
       <div class="col-sm-12 m-0 p-0">
         <top />
@@ -9,9 +9,10 @@
       </div>
       <div class="col-sm-10 top_nav_bar ">
         <div class="intro">
-          <h4>Patients Records</h4>
-          <button class="button" @click="addpatient">
-            <span>Add New Patient</span>
+          <h4>Nurses Records</h4>
+
+          <button class="button" @click="addphy()">
+            <span>Add New Nurse</span>
           </button>
         </div>
         <div class="table_container">
@@ -20,7 +21,8 @@
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Allergies</th>
+                <th>Address</th>
+                <th>Phone No</th>
 
                 <th colspan="3">
                   <input type="text" class="searchbutton" placeholder="Search Patient With First Name "
@@ -28,36 +30,18 @@
                 </th>
               </tr>
             </thead>
-
-            <tbody v-for="patient in filteredList()" :key="patient.id">
+            <tbody v-for="user in filteredList()" :key="user.id">
               <tr>
-                <td>{{ patient.firstname }}</td>
-                <td>{{ patient.lastname }}</td>
-                <td>{{ patient.allergies }}</td>
-
-                <td colspan="3">
-                  <button class="managebtn" @click="openDropDown(patient.id)">
-                    Manage
-                  </button>
-
-                  <ul v-if="openAction == patient.id" class="newdrop">
-                    <li>
-                      <router-link :to="{ name: 'medprofile', params: { profile_code: patient.profile_code } }">Medical
-                        Profile </router-link>
-                    </li>
-                    <li>
-                      <router-link :to="{ name: 'weeklyflow', params: { profile_code: patient.profile_code } }"> Weekly
-                        Treatment </router-link>
-                    </li>
-
-                    <li>
-                      <router-link :to="{ name: 'mar', params: { profile_code: patient.profile_code } }">MAR</router-link>
-                    </li>
-                    <li>
-                      <router-link :to="{ name: 'weekvent', params: { id: patient.id } }">Ventilator Sheet</router-link>
-                    </li>
-                  </ul>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.phone_no }}</td>
+                <td>
+                  <edit :user="user" />
                 </td>
+                <td><button class="delete">Delete</button></td>
+
+
               </tr>
             </tbody>
           </table>
@@ -69,55 +53,44 @@
 <script>
 import top from "@/components/topnav.vue";
 import side from "@/components/side.vue";
+import edit from "@/components/editnurse.vue"
 export default {
-  components: { top, side },
+  components: { top, side, edit },
   data() {
     return {
-      openAction: false,
-      search: "",
+      search: ""
     };
   },
+
   methods: {
-    addpatient() {
-      this.$router.push("/patientsign");
+    addphy() {
+      this.$router.push("/addnurse");
     },
-
-    medProf() {
-      this.$router.push("/medprofile/" + profile_code);
-    },
-    openDropDown(id) {
-      if (this.openAction == "") {
-        return (this.openAction = id);
-      }
-      return (this.openAction = "");
-    },
-
     filteredList() {
       if (this.search) {
-        return this.patients.filter((data) => {
+        return this.all_nurses.filter((data) => {
           return this.search
             .toLowerCase()
             .split(" ")
             .every((v) => data.firstname.toLowerCase().includes(v));
         });
       } else {
-        return this.patients;
+        return this.all_nurses;
       }
     },
   },
-
   mounted() {
-    this.$store.dispatch("all_patient");
-    this.filteredList();
+    this.$store.dispatch("all_nurses");
   },
-
   computed: {
-    patients() {
-      return this.$store.state.patientModule.all_patients;
+    all_nurses() {
+      return this.$store.state.nurseModule.all_nurses;
     },
   },
 };
 </script>
+
+
 
 <style scoped>
 .new {
@@ -138,13 +111,13 @@ export default {
   font-weight: bolder;
 }
 
-/* .intro button {
+.intro button {
   font-size: 20px !important;
   background: black;
   color: white;
   outline: none;
 }
- */
+
 .intro p {
   text-align: center;
 }
@@ -168,6 +141,11 @@ export default {
 .top_nav_bar {
   background: whitesmoke;
   height: 100vh;
+}
+
+.table_container {
+  width: 90%;
+  margin: auto;
 }
 
 /* .table button {
@@ -215,21 +193,19 @@ Button   */
   animation: glowing 1300ms infinite;
 }
 
-/* 
-dropdown    */
-
-.newdrop {
+.delete {
+  border: none;
   width: 50%;
-  background: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  text-align: center;
-  margin-top: 8px;
-  transition: height 0.2s ease;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
-.newdrop li {
-  padding: 0px;
-  list-style: none;
-  margin: 10px;
+.delete:hover {
+  border: none;
+  width: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background: red;
+  font-weight: bold;
 }</style>

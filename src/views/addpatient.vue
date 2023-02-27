@@ -1,9 +1,7 @@
 <template>
-  <div class="container-fluid text-white">
+  <top />
+  <div class="container-fluid text-white new">
     <div class="row">
-      <div class="col-sm-12">
-        <top />
-      </div>
       <div class="col-sm-12">
         <div class="intro">
           <h5>Isocare Medical Extenders Services, Inc</h5>
@@ -83,20 +81,20 @@
                 </tr>
               </tbody>
             </table>
-            <div class="carediv d-flex ">
+            <div class="carediv d-flex">
               <div>
                 <input type="checkbox" name="vehicle1" value="Bike" /> Start of
                 care<br />
                 <input type="checkbox" name="vehicle1" value="Bike" />Change Of
                 Treatment<br />
               </div>
-               <div>
+              <div>
                 <input type="checkbox" name="vehicle1" value="Bike" /> Start of
                 care<br />
                 <input type="checkbox" name="vehicle1" value="Bike" />Change Of
                 Treatment<br />
               </div>
-               <div>
+              <div>
                 <input type="checkbox" name="vehicle1" value="Bike" /> Start of
                 care<br />
                 <input type="checkbox" name="vehicle1" value="Bike" />Change Of
@@ -119,6 +117,10 @@ export default {
 </script>
 
 <style scoped>
+.new{
+  padding: 0px;
+  margin: 0px;
+}
 .intro {
   width: 80%;
   margin: 30px auto;
@@ -161,8 +163,7 @@ form textarea {
   padding-top: 10px;
 }
 
-.carediv > div{
+.carediv > div {
   width: 100%;
 }
-
 </style>
